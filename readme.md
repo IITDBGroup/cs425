@@ -35,13 +35,13 @@ The `-v` parameter mounts local directory `/mypost_data` as directory `/var/lib/
 
 # The University schema
 
-The image loads the university schema from the testbook into database `cs425`. 
+The image loads the university schema from the testbook into database `cs425` using this SQL script: [https://github.com/IITDBGroup/cs425/blob/master/university_schema_postgres.sql](https://github.com/IITDBGroup/cs425/blob/master/university_schema_postgres.sql)
 
 # SQL Clients #
 
 To run SQL commands on the postgres server you need a client application that connects to the server and allows you to write SQL code that is send to the server.
 
-# Starting psql (postgres commandline client) from within the container #
+## Starting psql (postgres commandline client) from within the container
 
 **psql** is the standard commandline client of Postgres. If you have created a container `mypostgres` then to run the `psql` client within the container run
 
@@ -95,9 +95,13 @@ For instance, **SQuirreL SQL** ([http://squirrel-sql.sourceforge.net/](http://sq
 
 * Postgres official webpage: [https://www.postgresql.org/](https://www.postgresql.org/)
 
+## Documentation
+
 * Online Postgres documentation: [https://www.postgresql.org/docs/9.6/static/index.html](https://www.postgresql.org/docs/9.6/static/index.html)
 
 * Postgres docu as a PDF: [https://www.postgresql.org/files/documentation/pdf/9.6/postgresql-9.6-US.pdf](https://www.postgresql.org/files/documentation/pdf/9.6/postgresql-9.6-US.pdf)
+
+## Programming Language APIs
 
 How to connect to postgres programmatically from various languages. There is a list of interfaces at [https://www.postgresql.org/download/products/2-drivers-and-interfaces/](https://www.postgresql.org/download/products/2-drivers-and-interfaces/). Below are the direct links for common languages.
 
@@ -110,5 +114,10 @@ How to connect to postgres programmatically from various languages. There is a l
 
 # Docker Links
 
+Docker is a virtualization system that enables images (think of them as virtual machine images) to be run as containers (think of them as VMs, but more lightweight).
 
+* **Docker**: [https://www.docker.com/](https://www.docker.com/)
 
+* **Docker Hub** ([https://hub.docker.com/](https://hub.docker.com/))is a public repository of images. Per default `docker pull` will pull images from this repository.
+
+* **Docker Tutorial**: [https://docs.docker.com/get-started/](https://docs.docker.com/get-started/)
