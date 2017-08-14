@@ -4,7 +4,7 @@ This repository stores some example SQL scripts and a Dockerfile for setting up 
 
 # Using the docker images
 
-The image for CS425 is based on the official postgres alpine image [https://hub.docker.com/_/postgres/](https://hub.docker.com/_/postgres/) which is based on the `alpine` linux image [https://hub.docker.com/_/alpine/](https://hub.docker.com/_/alpine/)
+The image for CS425 [https://hub.docker.com/r/iitdbgroup/cs425/](https://hub.docker.com/r/iitdbgroup/cs425/) is based on the official postgres alpine image [https://hub.docker.com/_/postgres/](https://hub.docker.com/_/postgres/) which is based on the `alpine` linux image [https://hub.docker.com/_/alpine/](https://hub.docker.com/_/alpine/)
 
 To start a postgres server create a container from the image. You can either let Postgres store the data inside the container (no mess, but once the container is removed all changes to database content are lost) or mount a folder from your machine inside the container in which case Postgres will store the database content in this folder. The second method has the advantage that the database will survive the removal of the container and in the future new containers using this database can be created.
 
@@ -89,11 +89,11 @@ A GUI client for administrating a postgres database. Also useful for editing SQL
 
 ## Third party clients
 
-For instance, **SQuirreL SQL** ([http://squirrel-sql.sourceforge.net/](http://squirrel-sql.sourceforge.net/)) is a popular 3rd party client that supports multiple DBMS.
+For instance, **SQuirreL SQL** ([http://squirrel-sql.sourceforge.net/](http://squirrel-sql.sourceforge.net/)) is a popular 3rd party client written in Java that supports multiple DBMS, **pgcli** ([https://www.pgcli.com/](https://www.pgcli.com/)) is an enhanced version of *psql* written in python.
 
 # Interactive SQL notebooks with Jupyter
 
-Some example notebooks are in the repository under `example-notebook`. The class notebooks will be stored under `classnotebook-2017-Fall`. Jupyter notebooks are interactive python environments that the user accesses through a web interface that allow code and documentation to be interleaved. Sessions can be stored as `.ipynb` files. You can use a docker image `iitdbgroup/sql-notebook` that we provide to run a jupyter notebook server that is available through a browser on your local machine at [http://127.0.0.1:8888/tree?](http://127.0.0.1:8888/tree?). Run the following command from the folder containing the notebook files (`.ipynb`) or any parent folder of this folder. This is assuming that your are running a postgres container named `mypostgres`.
+Some example notebooks are in the repository under `example-notebook`. The class notebooks will be stored under `classnotebook-2017-Fall`. Jupyter notebooks are interactive python environments that the user accesses through a web interface that allow code and documentation to be interleaved. Sessions can be stored as `.ipynb` files. You can use a docker image `iitdbgroup/sql-notebook` that we provide to run a jupyter notebook server that is available through a browser on your local machine at [http://127.0.0.1:8888/tree?](http://127.0.0.1:8888/tree?). Run the following command from the folder containing the notebook files (`.ipynb`) or any parent folder of this folder. This will create a docker virtual network called `mynbnetwork` and create two containers - one running postgres (`notebpostgres`) and a second one running the notebook server (`mynotebook`). For convenience you can use the scripts `startNotebook.sh` and `stopNotebook.sh`.
 
 ~~~
 docker run --user root --rm --name=mynotebook -v "$(pwd)":/home/jovyan/ -p 0.0.0.0:8888:8888/tcp --link  mypostgres:postgres -d iitdbgroup/sql_notebook start-notebook.sh --NotebookApp.token=''
