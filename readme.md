@@ -96,7 +96,7 @@ For instance, **SQuirreL SQL** ([http://squirrel-sql.sourceforge.net/](http://sq
 Some example notebooks are in the repository under `example-notebook`. The class notebooks will be stored under `classnotebook-2017-Fall`. Jupyter notebooks are interactive python environments that the user accesses through a web interface that allow code and documentation to be interleaved. Sessions can be stored as `.ipynb` files. You can use a docker image `iitdbgroup/sql-notebook` that we provide to run a jupyter notebook server that is available through a browser on your local machine at [http://127.0.0.1:8888/tree?](http://127.0.0.1:8888/tree?). Run the following command from the folder containing the notebook files (`.ipynb`) or any parent folder of this folder. This will create a docker virtual network called `mynbnetwork` and create two containers - one running postgres (`notebpostgres`) and a second one running the notebook server (`mynotebook`). For convenience you can use the scripts `startNotebook.sh` and `stopNotebook.sh`.
 
 ~~~
-docker run --user root --rm --name=mynotebook -v "$(pwd)":/home/jovyan/ -p 0.0.0.0:8888:8888/tcp --link  mypostgres:postgres -d iitdbgroup/sql_notebook start-notebook.sh --NotebookApp.token=''
+docker run --user root --rm --name=mynotebook -v "$(pwd)":/home/jovyan/ -p 0.0.0.0:8888:8888/tcp --link  mypostgres:postgres -d iitdbgroup/sql-notebook start-notebook.sh --NotebookApp.token=''
 ~~~
 
 For information about jupyter and cell magic see [http://jupyter.org/](http://jupyter.org/). The particular cell magic used here for running sql is described [here](https://github.com/catherinedevlin/ipython-sql). 
