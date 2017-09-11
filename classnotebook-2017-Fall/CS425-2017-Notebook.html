@@ -11968,6 +11968,82 @@ SELECT * FROM student_org;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's insert some rows into our new table. We are using SQL's insert command of the form</p>
+<div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="k">table_name</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">value_list</span><span class="p">);</span>
+</pre></div>
+<p>and then check the updated content.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+INSERT INTO student_org VALUES (&#39;ACM&#39;, 10000, &#39;a&#39;);
+INSERT INTO student_org VALUES (&#39;IEEE&#39;, 20000, &#39;a&#39;);
+SELECT * FROM student_org;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+1 rows affected.
+2 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>budget</th>
+        <th>gender</th>
+    </tr>
+    <tr>
+        <td>ACM</td>
+        <td>10000.0</td>
+        <td>a</td>
+    </tr>
+    <tr>
+        <td>IEEE</td>
+        <td>20000.0</td>
+        <td>a</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Changing-the-schema-of-a-relation">Changing the schema of a relation<a class="anchor-link" href="#Changing-the-schema-of-a-relation">&#182;</a></h2><p>SQL provides the <code>ALTER TABLE</code> command for changing the schema of a relation. Let's add a column storing the immigration status of student to the <code>student</code> relation:</p>
 
 </div>
