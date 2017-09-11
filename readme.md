@@ -2,6 +2,8 @@
 
 This repository stores some example SQL scripts and a Dockerfile for setting up a postgres container with the university example database for CS425 at IIT. Some relevant Postgres and Docker links are shown at the bottom of this page. Furthermore, this repository stores jupyter notebooks ([http://jupyter.org/](http://jupyter.org/)) that are developed during class, HTML pages derived from these notebooks, and instructions for how to use Docker to run SQL based notebooks locally. 
 
+* The class's SQL notebook can be found [here](http://htmlpreview.github.io/?https://github.com/IITDBGroup/cs425/blob/master/classnotebook-2017-Fall/CS425-2017-Notebook.html)
+
 # Using the docker images
 
 The image for CS425 [https://hub.docker.com/r/iitdbgroup/cs425/](https://hub.docker.com/r/iitdbgroup/cs425/) is based on the official postgres alpine image [https://hub.docker.com/_/postgres/](https://hub.docker.com/_/postgres/) which is based on the `alpine` linux image [https://hub.docker.com/_/alpine/](https://hub.docker.com/_/alpine/)
