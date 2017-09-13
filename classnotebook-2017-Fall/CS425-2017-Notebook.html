@@ -12581,7 +12581,7 @@ SELECT * FROM department
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
@@ -12609,7 +12609,7 @@ SELECT dept_name FROM department
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[3]:</div>
+<div class="prompt output_prompt">Out[2]:</div>
 
 
 
@@ -12716,6 +12716,823 @@ SELECT DISTINCT dept_name FROM student
     </tr>
     <tr>
         <td>Biology</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>just to demonstrate what would be different if we omit the <code>DISTINCT</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span> 
+SELECT dept_name FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>dept_name</th>
+    </tr>
+    <tr>
+        <td>Comp. Sci.</td>
+    </tr>
+    <tr>
+        <td>Comp. Sci.</td>
+    </tr>
+    <tr>
+        <td>History</td>
+    </tr>
+    <tr>
+        <td>Finance</td>
+    </tr>
+    <tr>
+        <td>Physics</td>
+    </tr>
+    <tr>
+        <td>Physics</td>
+    </tr>
+    <tr>
+        <td>Comp. Sci.</td>
+    </tr>
+    <tr>
+        <td>Music</td>
+    </tr>
+    <tr>
+        <td>Physics</td>
+    </tr>
+    <tr>
+        <td>Comp. Sci.</td>
+    </tr>
+    <tr>
+        <td>Elec. Eng.</td>
+    </tr>
+    <tr>
+        <td>Elec. Eng.</td>
+    </tr>
+    <tr>
+        <td>Biology</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Return ids of students that have more than 50 total credits</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT id 
+FROM student
+WHERE tot_cred &gt; 50
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>9 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+    </tr>
+    <tr>
+        <td>00128</td>
+    </tr>
+    <tr>
+        <td>19991</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+    </tr>
+    <tr>
+        <td>44553</td>
+    </tr>
+    <tr>
+        <td>54321</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+    </tr>
+    <tr>
+        <td>98765</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>just to confirm that this worked let's get back all of the attributes</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT *
+FROM student
+WHERE tot_cred &gt; 50
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>9 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>00128</td>
+        <td>Zhang</td>
+        <td>Comp. Sci.</td>
+        <td>102</td>
+    </tr>
+    <tr>
+        <td>19991</td>
+        <td>Brandt</td>
+        <td>History</td>
+        <td>80</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+        <td>Chavez</td>
+        <td>Finance</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>44553</td>
+        <td>Peltier</td>
+        <td>Physics</td>
+        <td>56</td>
+    </tr>
+    <tr>
+        <td>54321</td>
+        <td>Williams</td>
+        <td>Comp. Sci.</td>
+        <td>54</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>58</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>60</td>
+    </tr>
+    <tr>
+        <td>98765</td>
+        <td>Bourikas</td>
+        <td>Elec. Eng.</td>
+        <td>98</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+        <td>Tanaka</td>
+        <td>Biology</td>
+        <td>120</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finding all the instructors and the buildings they are working in</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT name, building
+FROM instructor, department
+WHERE instructor.dept_name = department.dept_name
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>12 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>building</th>
+    </tr>
+    <tr>
+        <td>Srinivasan</td>
+        <td>Taylor</td>
+    </tr>
+    <tr>
+        <td>Wu</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Mozart</td>
+        <td>Packard</td>
+    </tr>
+    <tr>
+        <td>Einstein</td>
+        <td>Watson</td>
+    </tr>
+    <tr>
+        <td>El Said</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Gold</td>
+        <td>Watson</td>
+    </tr>
+    <tr>
+        <td>Katz</td>
+        <td>Taylor</td>
+    </tr>
+    <tr>
+        <td>Califieri</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Singh</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Crick</td>
+        <td>Watson</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>Taylor</td>
+    </tr>
+    <tr>
+        <td>Kim</td>
+        <td>Taylor</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>or using aliasing we can write the same query with less code. In SQL you can assign an alias to a relation in the <code>FROM</code> clause like this <code>relation alias</code>. Then you can refer to the relation using the alias instead of the relation name in the <code>SELECT</code> and <code>WHERE</code> clauses.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT i.name, d.building
+FROM instructor i, department d
+WHERE i.dept_name = d.dept_name
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>12 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>building</th>
+    </tr>
+    <tr>
+        <td>Srinivasan</td>
+        <td>Taylor</td>
+    </tr>
+    <tr>
+        <td>Wu</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Mozart</td>
+        <td>Packard</td>
+    </tr>
+    <tr>
+        <td>Einstein</td>
+        <td>Watson</td>
+    </tr>
+    <tr>
+        <td>El Said</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Gold</td>
+        <td>Watson</td>
+    </tr>
+    <tr>
+        <td>Katz</td>
+        <td>Taylor</td>
+    </tr>
+    <tr>
+        <td>Califieri</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Singh</td>
+        <td>Painter</td>
+    </tr>
+    <tr>
+        <td>Crick</td>
+        <td>Watson</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>Taylor</td>
+    </tr>
+    <tr>
+        <td>Kim</td>
+        <td>Taylor</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pairs of instructors working for the same department (we use <code>x.name &lt;&gt; y.name</code> to ensure that we are not pairing an instructment with him-/herself.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT x.name, y.name
+FROM instructor x, instructor y
+WHERE x.dept_name = y.dept_name AND x.name &lt;&gt; y.name
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>12 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>name_1</th>
+    </tr>
+    <tr>
+        <td>Srinivasan</td>
+        <td>Brandt</td>
+    </tr>
+    <tr>
+        <td>Srinivasan</td>
+        <td>Katz</td>
+    </tr>
+    <tr>
+        <td>Wu</td>
+        <td>Singh</td>
+    </tr>
+    <tr>
+        <td>Einstein</td>
+        <td>Gold</td>
+    </tr>
+    <tr>
+        <td>El Said</td>
+        <td>Califieri</td>
+    </tr>
+    <tr>
+        <td>Gold</td>
+        <td>Einstein</td>
+    </tr>
+    <tr>
+        <td>Katz</td>
+        <td>Brandt</td>
+    </tr>
+    <tr>
+        <td>Katz</td>
+        <td>Srinivasan</td>
+    </tr>
+    <tr>
+        <td>Califieri</td>
+        <td>El Said</td>
+    </tr>
+    <tr>
+        <td>Singh</td>
+        <td>Wu</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>Katz</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>Srinivasan</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However this still returns each pair of instructors A and B twice. Once as <code>(A,B)</code> and once as <code>(B,A)</code>. To avoid that we can enforce that the name of the left instructor is lexicographically smaller than the name of the right instructor by adding a condition <code>x.name &lt; y.name</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT x.name, y.name AS name_right
+FROM instructor x, instructor y
+WHERE x.dept_name = y.dept_name AND x.name &lt;&gt; y.name AND x.name &lt; y.name
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>name_right</th>
+    </tr>
+    <tr>
+        <td>Einstein</td>
+        <td>Gold</td>
+    </tr>
+    <tr>
+        <td>Katz</td>
+        <td>Srinivasan</td>
+    </tr>
+    <tr>
+        <td>Califieri</td>
+        <td>El Said</td>
+    </tr>
+    <tr>
+        <td>Singh</td>
+        <td>Wu</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>Katz</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>Srinivasan</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the <code>SELECT</code> clause you can also use expressions, e.g., arithmetics and renaming (<code>expression AS new_name</code>).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT name, tot_cred / 10 AS one_tenth_cred
+FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>one_tenth_cred</th>
+    </tr>
+    <tr>
+        <td>Zhang</td>
+        <td>10.2000000000000000</td>
+    </tr>
+    <tr>
+        <td>Shankar</td>
+        <td>3.2000000000000000</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>8.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Chavez</td>
+        <td>11.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Peltier</td>
+        <td>5.6000000000000000</td>
+    </tr>
+    <tr>
+        <td>Levy</td>
+        <td>4.6000000000000000</td>
+    </tr>
+    <tr>
+        <td>Williams</td>
+        <td>5.4000000000000000</td>
+    </tr>
+    <tr>
+        <td>Sanchez</td>
+        <td>3.8000000000000000</td>
+    </tr>
+    <tr>
+        <td>Snow</td>
+        <td>0E-20</td>
+    </tr>
+    <tr>
+        <td>Brown</td>
+        <td>5.8000000000000000</td>
+    </tr>
+    <tr>
+        <td>Aoi</td>
+        <td>6.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Bourikas</td>
+        <td>9.8000000000000000</td>
+    </tr>
+    <tr>
+        <td>Tanaka</td>
+        <td>12.0000000000000000</td>
     </tr>
 </table>
 </div>
