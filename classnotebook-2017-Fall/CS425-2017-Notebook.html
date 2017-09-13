@@ -11832,6 +11832,35 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Basic-SQL-syntax,-constants,-and-identifiers">Basic SQL syntax, constants, and identifiers<a class="anchor-link" href="#Basic-SQL-syntax,-constants,-and-identifiers">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Keywords">Keywords<a class="anchor-link" href="#Keywords">&#182;</a></h2><p>Keywords in SQL are case insensitive, e.g., <code>SELECT</code>, <code>SeLeCT</code>, and <code>select</code> will all be recognized as the keyword "SELECT" in SQL.</p>
+<h2 id="Identifiers">Identifiers<a class="anchor-link" href="#Identifiers">&#182;</a></h2><p>The conventions for identifiers (e.g., table and attribute names) in SQL are dependent on the database system you are using. Typically, identifiers are case-insensitive, have to start with a letter, and can contain letters, numbers, and <code>_</code> (underscore). Postgres internally stores identifiers as lowercase, e.g., table names <code>STuDENt</code>, <code>student</code>, and <code>STUDENT</code> would all be represented internally as <code>student</code>. Using quoting, you can use identifiers that do not follow this syntax. Quoted identifiers are delimited by <code>"</code> (double quote). For example, <code>99people</code> is not a valid identifier since it starts with a number. However, <code>"99people"</code> is allowed.</p>
+<h2 id="Constants">Constants<a class="anchor-link" href="#Constants">&#182;</a></h2><ul>
+<li>String constants in SQL are delimited by <code>'</code> (single quote), e.g., <code>'Peter'</code> is a valid string</li>
+<li>Number constants, e.g., <code>1</code>, <code>12432</code>, <code>-234235</code></li>
+<li>Format of date constants is database system dependent. Most systems allow you to specify the format for a date. See <a href="https://www.postgresql.org/docs/9.6/static/datatype-datetime.html">https://www.postgresql.org/docs/9.6/static/datatype-datetime.html</a> for information of how dates are handled in Postgres. For example, <code>DATE '2004-10-19'</code> creates a date constant</li>
+</ul>
+<h2 id="Casting">Casting<a class="anchor-link" href="#Casting">&#182;</a></h2><ul>
+<li>In postgres casting is denoted by <code>expression::datatype</code>. For instance, <code>'123'::int</code> casts the string constant <code>'123'</code> as an integer</li>
+</ul>
+<h2 id="Function-Calls">Function Calls<a class="anchor-link" href="#Function-Calls">&#182;</a></h2><ul>
+<li>functions are called using <code>()</code>. For instance, function <code>upper</code> converts a string into upper case: <code>upper('abc')</code> would yield <code>'ABC'</code>.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Data-Definition-Language-(DDL)">Data Definition Language (DDL)<a class="anchor-link" href="#Data-Definition-Language-(DDL)">&#182;</a></h1><p>The data definition language part of SQL allows you to change the schema of a database, e.g., creating new relations (tables) or changing the schema of a relation.</p>
 
 </div>
