@@ -13547,6 +13547,744 @@ FROM student
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>new operators for comparison and case distinctions, return for each student an indicator whether they are ready to graduate. A student is ready to graduate if they have earned more than 80 credits.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT name, tot_cred, CASE WHEN tot_cred &gt; 80 THEN &#39;ready to graduate&#39; ELSE &#39;not ready&#39; END AS grad_status
+FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>tot_cred</th>
+        <th>grad_status</th>
+    </tr>
+    <tr>
+        <td>Zhang</td>
+        <td>102</td>
+        <td>ready to graduate</td>
+    </tr>
+    <tr>
+        <td>Shankar</td>
+        <td>32</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>80</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Chavez</td>
+        <td>110</td>
+        <td>ready to graduate</td>
+    </tr>
+    <tr>
+        <td>Peltier</td>
+        <td>56</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Levy</td>
+        <td>46</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Williams</td>
+        <td>54</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Sanchez</td>
+        <td>38</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Snow</td>
+        <td>0</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Brown</td>
+        <td>58</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Aoi</td>
+        <td>60</td>
+        <td>not ready</td>
+    </tr>
+    <tr>
+        <td>Bourikas</td>
+        <td>98</td>
+        <td>ready to graduate</td>
+    </tr>
+    <tr>
+        <td>Tanaka</td>
+        <td>120</td>
+        <td>ready to graduate</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>return students with between 80 and 100 credits</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT name, tot_cred
+FROM student
+WHERE tot_cred BETWEEN 80 AND 100
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>80</td>
+    </tr>
+    <tr>
+        <td>Bourikas</td>
+        <td>98</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Based on student request, we made it work using aggregation and having (assuming that student names are unique)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT name, min(tot_cred) AS tot_cred
+FROM student
+GROUP BY name
+HAVING min(tot_cred) &gt;= 80 AND max(tot_cred) &lt;= 100
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>Bourikas</td>
+        <td>98</td>
+    </tr>
+    <tr>
+        <td>Brandt</td>
+        <td>80</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Return the average total credits of students per department. In SQL, aggregation is applied in the <code>SELECT</code> clause. Group-by expressions are given a separate <code>GROUP BY</code> clause.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT dept_name, avg(tot_cred) AS avg_cred
+FROM student
+GROUP BY dept_name
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>7 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>dept_name</th>
+        <th>avg_cred</th>
+    </tr>
+    <tr>
+        <td>Comp. Sci.</td>
+        <td>61.5000000000000000</td>
+    </tr>
+    <tr>
+        <td>Elec. Eng.</td>
+        <td>79.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>History</td>
+        <td>80.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Music</td>
+        <td>38.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Finance</td>
+        <td>110.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Physics</td>
+        <td>34.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Biology</td>
+        <td>120.0000000000000000</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we only want departments where the average credit is larger than <code>100</code> we can apply a <code>HAVING</code> clause to post-filter the result after aggregation. The <code>HAVING</code> clause and the <code>WHERE</code> clause both correspond to selection in relational algebra. The difference is that the <code>WHERE</code> clause is applied <strong>before</strong> any aggregation or grouping is evaluated and the <code>HAVING</code> clause is applied <strong>after</strong> aggregation. Note that the <code>HAVING</code> clause may reference aggregation functions that are not used in the <code>SELECT</code> clause.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT dept_name, avg(tot_cred) AS avg_cred
+FROM student
+GROUP BY dept_name
+HAVING avg(tot_cred) &gt; 100
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>dept_name</th>
+        <th>avg_cred</th>
+    </tr>
+    <tr>
+        <td>Finance</td>
+        <td>110.0000000000000000</td>
+    </tr>
+    <tr>
+        <td>Biology</td>
+        <td>120.0000000000000000</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Return the total credit hours students from the <code>Music</code> or <code>Biology</code> departments have taken.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT sum(tot_cred)
+FROM student
+WHERE dept_name = &#39;Music&#39; OR dept_name = &#39;Biology&#39;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>sum</th>
+    </tr>
+    <tr>
+        <td>158</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Return the highest instructor salary:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT max(salary)
+FROM instructor
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>max</th>
+    </tr>
+    <tr>
+        <td>95000.00</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Same query, but using the trick we introduced in the relational algebra part of the lecture to compute maximal salaries without using aggregation (find salaries for which at least one higher salary exists and then remove these salaries from the set of all salaries). Note that here we are using the <strong>Set</strong> version of set difference.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+(SELECT salary FROM instructor)
+EXCEPT
+(SELECT l.salary
+FROM instructor l, instructor r
+WHERE l.salary &lt; r.salary)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>salary</th>
+    </tr>
+    <tr>
+        <td>95000.00</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's get back the names of instructors with the highest salaries. This requires joining the result of aggregation with the instructor table. Here we use two new features:</p>
+<ul>
+<li><code>WITH q AS (SELECT ...)</code> defines a so-called common table expression (CTE). This works just like assignment in relational algebra</li>
+<li>the <code>FROM</code> clause can contain queries. The semantics is that the queries in the <code>FROM</code> clause are evaluated first before we evaluate the outer query.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH maxSal AS (SELECT max(salary) AS msal
+FROM instructor)
+SELECT i.name
+FROM maxSal m, instructor i
+WHERE msal = i.salary
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[19]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+    </tr>
+    <tr>
+        <td>Einstein</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Or using subqueries in the <code>FROM</code> clause instead of the CTEs</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT i.name
+FROM (SELECT max(salary) AS msal
+      FROM instructor) m, 
+      instructor i
+WHERE msal = i.salary
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+    </tr>
+    <tr>
+        <td>Einstein</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Data-Manipulation-Language-(DML)-Operations">Data Manipulation Language (DML) Operations<a class="anchor-link" href="#Data-Manipulation-Language-(DML)-Operations">&#182;</a></h1><p>Now let's learn about how to update tables by inserting, deleting, and updating rows.</p>
 
 </div>
