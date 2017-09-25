@@ -14285,6 +14285,268 @@ WHERE msal = i.salary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Find names of students with the lowest tot_credit. Here we are using a nested subquery to compute the lowest <code>tot_cred</code> value.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT s.name, s.tot_cred
+FROM student s
+WHERE s.tot_cred = (SELECT min(t.tot_cred) FROM student t)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>Snow</td>
+        <td>0</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>with <code>ORDER BY</code> and <code>LIMIT</code>. Limit returns a specified number of rows and is evaluated after the <code>ORDER BY</code>. Thus, in this case it returns the student (or one of the students) with the lowest <code>tot_cred</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT s.name, tot_cred
+FROM student s
+ORDER BY tot_cred ASC
+LIMIT 1
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>Snow</td>
+        <td>0</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Return the instructors that have not thaught any Biology classes. We use a CTE to compute the ids of instructors that have thaught Biology courses and then use a nested subquery <code>NOT IN</code> to only return instructors that are not in that set.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH bioids AS (
+SELECT t.id
+FROM course c, teaches t
+WHERE c.dept_name = &#39;Biology&#39; AND c.course_id = t.course_id)
+
+SELECT i.*
+FROM instructor i
+WHERE i.id NOT IN (SELECT * FROM bioids)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>11 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>salary</th>
+    </tr>
+    <tr>
+        <td>10101</td>
+        <td>Srinivasan</td>
+        <td>Comp. Sci.</td>
+        <td>65000.00</td>
+    </tr>
+    <tr>
+        <td>12121</td>
+        <td>Wu</td>
+        <td>Finance</td>
+        <td>90000.00</td>
+    </tr>
+    <tr>
+        <td>15151</td>
+        <td>Mozart</td>
+        <td>Music</td>
+        <td>40000.00</td>
+    </tr>
+    <tr>
+        <td>22222</td>
+        <td>Einstein</td>
+        <td>Physics</td>
+        <td>95000.00</td>
+    </tr>
+    <tr>
+        <td>32343</td>
+        <td>El Said</td>
+        <td>History</td>
+        <td>60000.00</td>
+    </tr>
+    <tr>
+        <td>33456</td>
+        <td>Gold</td>
+        <td>Physics</td>
+        <td>87000.00</td>
+    </tr>
+    <tr>
+        <td>45565</td>
+        <td>Katz</td>
+        <td>Comp. Sci.</td>
+        <td>75000.00</td>
+    </tr>
+    <tr>
+        <td>58583</td>
+        <td>Califieri</td>
+        <td>History</td>
+        <td>62000.00</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Singh</td>
+        <td>Finance</td>
+        <td>80000.00</td>
+    </tr>
+    <tr>
+        <td>83821</td>
+        <td>Brandt</td>
+        <td>Comp. Sci.</td>
+        <td>92000.00</td>
+    </tr>
+    <tr>
+        <td>98345</td>
+        <td>Kim</td>
+        <td>Elec. Eng.</td>
+        <td>80000.00</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Data-Manipulation-Language-(DML)-Operations">Data Manipulation Language (DML) Operations<a class="anchor-link" href="#Data-Manipulation-Language-(DML)-Operations">&#182;</a></h1><p>Now let's learn about how to update tables by inserting, deleting, and updating rows.</p>
 
 </div>
