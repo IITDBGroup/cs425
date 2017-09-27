@@ -14563,9 +14563,18 @@ WHERE i.id NOT IN (SELECT * FROM bioids)
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Insert a new department of Data Science</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
@@ -14593,7 +14602,7 @@ INSERT INTO department VALUES (&#39;data science&#39;, &#39;Watson&#39;, 200000.
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[3]:</div>
+<div class="prompt output_prompt">Out[2]:</div>
 
 
 
@@ -14619,7 +14628,7 @@ INSERT INTO department VALUES (&#39;data science&#39;, &#39;Watson&#39;, 200000.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
@@ -14647,7 +14656,7 @@ SELECT * FROM department
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[4]:</div>
+<div class="prompt output_prompt">Out[3]:</div>
 
 
 
@@ -14697,6 +14706,1254 @@ SELECT * FROM department
         <td>data science</td>
         <td>Watson</td>
         <td>200000.00</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's insert every instructor as a student. Since instructor and student <code>id</code>'s are overlapping we are using the last 4 digits of an instructor's id with a prefix  'I' as his/her student id</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+INSERT INTO student (
+SELECT &#39;I&#39; || substring(id,1,3) AS id, name, dept_name, 0 AS tot_cred
+FROM instructor);
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>12 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>now let's look at our new student</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>25 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>00128</td>
+        <td>Zhang</td>
+        <td>Comp. Sci.</td>
+        <td>102</td>
+    </tr>
+    <tr>
+        <td>12345</td>
+        <td>Shankar</td>
+        <td>Comp. Sci.</td>
+        <td>32</td>
+    </tr>
+    <tr>
+        <td>19991</td>
+        <td>Brandt</td>
+        <td>History</td>
+        <td>80</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+        <td>Chavez</td>
+        <td>Finance</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>44553</td>
+        <td>Peltier</td>
+        <td>Physics</td>
+        <td>56</td>
+    </tr>
+    <tr>
+        <td>45678</td>
+        <td>Levy</td>
+        <td>Physics</td>
+        <td>46</td>
+    </tr>
+    <tr>
+        <td>54321</td>
+        <td>Williams</td>
+        <td>Comp. Sci.</td>
+        <td>54</td>
+    </tr>
+    <tr>
+        <td>55739</td>
+        <td>Sanchez</td>
+        <td>Music</td>
+        <td>38</td>
+    </tr>
+    <tr>
+        <td>70557</td>
+        <td>Snow</td>
+        <td>Physics</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>58</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>60</td>
+    </tr>
+    <tr>
+        <td>98765</td>
+        <td>Bourikas</td>
+        <td>Elec. Eng.</td>
+        <td>98</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+        <td>Tanaka</td>
+        <td>Biology</td>
+        <td>120</td>
+    </tr>
+    <tr>
+        <td>I101</td>
+        <td>Srinivasan</td>
+        <td>Comp. Sci.</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I121</td>
+        <td>Wu</td>
+        <td>Finance</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I151</td>
+        <td>Mozart</td>
+        <td>Music</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I222</td>
+        <td>Einstein</td>
+        <td>Physics</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I323</td>
+        <td>El Said</td>
+        <td>History</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I334</td>
+        <td>Gold</td>
+        <td>Physics</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I455</td>
+        <td>Katz</td>
+        <td>Comp. Sci.</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I585</td>
+        <td>Califieri</td>
+        <td>History</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I765</td>
+        <td>Singh</td>
+        <td>Finance</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I767</td>
+        <td>Crick</td>
+        <td>Biology</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I838</td>
+        <td>Brandt</td>
+        <td>Comp. Sci.</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>I983</td>
+        <td>Kim</td>
+        <td>Elec. Eng.</td>
+        <td>0</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>... we made a mistake only using the first 3 digits of an id. Let's delete the new student to correct our error. Tow ways of achieving this are:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+DELETE FROM student
+WHERE substring(id,1,1) = &#39;I&#39;;
+
+DELETE FROM student
+WHERE id LIKE &#39;I%&#39;;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>12 rows affected.
+0 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>00128</td>
+        <td>Zhang</td>
+        <td>Comp. Sci.</td>
+        <td>102</td>
+    </tr>
+    <tr>
+        <td>12345</td>
+        <td>Shankar</td>
+        <td>Comp. Sci.</td>
+        <td>32</td>
+    </tr>
+    <tr>
+        <td>19991</td>
+        <td>Brandt</td>
+        <td>History</td>
+        <td>80</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+        <td>Chavez</td>
+        <td>Finance</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>44553</td>
+        <td>Peltier</td>
+        <td>Physics</td>
+        <td>56</td>
+    </tr>
+    <tr>
+        <td>45678</td>
+        <td>Levy</td>
+        <td>Physics</td>
+        <td>46</td>
+    </tr>
+    <tr>
+        <td>54321</td>
+        <td>Williams</td>
+        <td>Comp. Sci.</td>
+        <td>54</td>
+    </tr>
+    <tr>
+        <td>55739</td>
+        <td>Sanchez</td>
+        <td>Music</td>
+        <td>38</td>
+    </tr>
+    <tr>
+        <td>70557</td>
+        <td>Snow</td>
+        <td>Physics</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>58</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>60</td>
+    </tr>
+    <tr>
+        <td>98765</td>
+        <td>Bourikas</td>
+        <td>Elec. Eng.</td>
+        <td>98</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+        <td>Tanaka</td>
+        <td>Biology</td>
+        <td>120</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A better way may be to only insert instructors with ids that do not exist</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+INSERT INTO student 
+(
+SELECT i.id, name, dept_name, 0 AS tot_cred
+FROM instructor i,
+(SELECT id
+FROM instructor
+EXCEPT
+SELECT id
+FROM student) x
+WHERE x.id = i.id)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>11 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A simpler way to express this query is (since we have already inserted these instructors this query now returns the empty set)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT id, name, dept_name, 0 AS tot_cred
+FROM instructor
+WHERE id NOT IN (SELECT id FROM student)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's give every student an extra 3 credits.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+UPDATE student SET tot_cred = tot_cred + 3;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>24 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>24 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>00128</td>
+        <td>Zhang</td>
+        <td>Comp. Sci.</td>
+        <td>105</td>
+    </tr>
+    <tr>
+        <td>12345</td>
+        <td>Shankar</td>
+        <td>Comp. Sci.</td>
+        <td>35</td>
+    </tr>
+    <tr>
+        <td>19991</td>
+        <td>Brandt</td>
+        <td>History</td>
+        <td>83</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+        <td>Chavez</td>
+        <td>Finance</td>
+        <td>113</td>
+    </tr>
+    <tr>
+        <td>44553</td>
+        <td>Peltier</td>
+        <td>Physics</td>
+        <td>59</td>
+    </tr>
+    <tr>
+        <td>45678</td>
+        <td>Levy</td>
+        <td>Physics</td>
+        <td>49</td>
+    </tr>
+    <tr>
+        <td>54321</td>
+        <td>Williams</td>
+        <td>Comp. Sci.</td>
+        <td>57</td>
+    </tr>
+    <tr>
+        <td>55739</td>
+        <td>Sanchez</td>
+        <td>Music</td>
+        <td>41</td>
+    </tr>
+    <tr>
+        <td>70557</td>
+        <td>Snow</td>
+        <td>Physics</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>61</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>63</td>
+    </tr>
+    <tr>
+        <td>98765</td>
+        <td>Bourikas</td>
+        <td>Elec. Eng.</td>
+        <td>101</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+        <td>Tanaka</td>
+        <td>Biology</td>
+        <td>123</td>
+    </tr>
+    <tr>
+        <td>33456</td>
+        <td>Gold</td>
+        <td>Physics</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>22222</td>
+        <td>Einstein</td>
+        <td>Physics</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>15151</td>
+        <td>Mozart</td>
+        <td>Music</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>58583</td>
+        <td>Califieri</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>45565</td>
+        <td>Katz</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>32343</td>
+        <td>El Said</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>12121</td>
+        <td>Wu</td>
+        <td>Finance</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>10101</td>
+        <td>Srinivasan</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>76766</td>
+        <td>Crick</td>
+        <td>Biology</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>83821</td>
+        <td>Brandt</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>98345</td>
+        <td>Kim</td>
+        <td>Elec. Eng.</td>
+        <td>3</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we want to delete the students with the highest credits in their departments. Let's start by writing a query that finds these students:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student s
+WHERE tot_cred IN (SELECT max(m.tot_cred) FROM student m WHERE s.dept_name = m.dept_name)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>7 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>00128</td>
+        <td>Zhang</td>
+        <td>Comp. Sci.</td>
+        <td>105</td>
+    </tr>
+    <tr>
+        <td>19991</td>
+        <td>Brandt</td>
+        <td>History</td>
+        <td>83</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+        <td>Chavez</td>
+        <td>Finance</td>
+        <td>113</td>
+    </tr>
+    <tr>
+        <td>44553</td>
+        <td>Peltier</td>
+        <td>Physics</td>
+        <td>59</td>
+    </tr>
+    <tr>
+        <td>55739</td>
+        <td>Sanchez</td>
+        <td>Music</td>
+        <td>41</td>
+    </tr>
+    <tr>
+        <td>98765</td>
+        <td>Bourikas</td>
+        <td>Elec. Eng.</td>
+        <td>101</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+        <td>Tanaka</td>
+        <td>Biology</td>
+        <td>123</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can delete the students</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+DELETE FROM student s
+WHERE tot_cred IN (SELECT max(m.tot_cred) FROM student m WHERE s.dept_name = m.dept_name)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>7 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>17 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>12345</td>
+        <td>Shankar</td>
+        <td>Comp. Sci.</td>
+        <td>35</td>
+    </tr>
+    <tr>
+        <td>45678</td>
+        <td>Levy</td>
+        <td>Physics</td>
+        <td>49</td>
+    </tr>
+    <tr>
+        <td>54321</td>
+        <td>Williams</td>
+        <td>Comp. Sci.</td>
+        <td>57</td>
+    </tr>
+    <tr>
+        <td>70557</td>
+        <td>Snow</td>
+        <td>Physics</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>61</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>63</td>
+    </tr>
+    <tr>
+        <td>33456</td>
+        <td>Gold</td>
+        <td>Physics</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>22222</td>
+        <td>Einstein</td>
+        <td>Physics</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>15151</td>
+        <td>Mozart</td>
+        <td>Music</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>58583</td>
+        <td>Califieri</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>45565</td>
+        <td>Katz</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>32343</td>
+        <td>El Said</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>12121</td>
+        <td>Wu</td>
+        <td>Finance</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>10101</td>
+        <td>Srinivasan</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>76766</td>
+        <td>Crick</td>
+        <td>Biology</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>83821</td>
+        <td>Brandt</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>98345</td>
+        <td>Kim</td>
+        <td>Elec. Eng.</td>
+        <td>3</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Alternatively, we could have written the nested subquery as (now returns which of the remaining students have the highest <code>tot_cred</code> values for their department)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student s
+WHERE (tot_cred, dept_name) IN (SELECT max(m.tot_cred), dept_name FROM student m GROUP BY dept_name)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>8 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>45678</td>
+        <td>Levy</td>
+        <td>Physics</td>
+        <td>49</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>61</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>63</td>
+    </tr>
+    <tr>
+        <td>15151</td>
+        <td>Mozart</td>
+        <td>Music</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>58583</td>
+        <td>Califieri</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>32343</td>
+        <td>El Said</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>12121</td>
+        <td>Wu</td>
+        <td>Finance</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>76766</td>
+        <td>Crick</td>
+        <td>Biology</td>
+        <td>3</td>
     </tr>
 </table>
 </div>
