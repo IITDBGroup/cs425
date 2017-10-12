@@ -14547,6 +14547,832 @@ WHERE i.id NOT IN (SELECT * FROM bioids)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Recursive-Queries">Recursive Queries<a class="anchor-link" href="#Recursive-Queries">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's compute direct and indirect prerequisites</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM prereq;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>7 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since there are no indirect prerequisties, let's insert ones</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+INSERT INTO prereq VALUES (&#39;CS-319&#39;, &#39;CS-315&#39;);
+INSERT INTO prereq VALUES (&#39;CS-347&#39;, &#39;CS-319&#39;);
+INSERT INTO prereq VALUES (&#39;EE-181&#39;, &#39;CS-347&#39;);
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+1 rows affected.
+1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This results in the following prereq table, e.g,. one indirect prerequisite of <code>CS-319</code> is <code>CS-101</code> through a chain of prerequisites <code>CS-319 -&gt; CS-315 -&gt; CS-101</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM prereq;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>10 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's write the a query that returns prerequisites, and indirect prerequisites (path up to length 3)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH p1 AS (SELECT * FROM prereq),
+p2 AS (SELECT p1.course_id, two.prereq_id
+       FROM p1, prereq two
+       WHERE p1.prereq_id = two.course_id),
+p3 AS (SELECT p2.course_id, two.prereq_id
+       FROM p2, prereq two
+       WHERE p2.prereq_id = two.course_id)
+SELECT * FROM p1
+UNION
+SELECT * FROM p2
+UNION
+SELECT * FROM p3
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>14 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-315</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-315</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Alternatively, to get all indirect prerequisities no matter how long the paths, we can use a recursive query. Every recusive step increases the length of considered paths by 1.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE inpre AS (
+SELECT * FROM prereq
+UNION
+SELECT inpre.course_id, two.prereq_id
+FROM inpre, prereq two
+WHERE inpre.prereq_id = two.course_id
+)
+SELECT * FROM inpre;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>14 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-315</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-315</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To expose the structure of the computation, we can add a column that counts iterations (corresponding to path length).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE inpre AS (
+SELECT *, 1 path_length FROM prereq
+UNION
+SELECT inpre.course_id, two.prereq_id, path_length + 1 AS path_length
+FROM inpre, prereq two
+WHERE inpre.prereq_id = two.course_id
+)
+SELECT * FROM inpre;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>19 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+        <th>path_length</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-315</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-319</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-315</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>4</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Such a counter can then also be used to limit the depth of the recusion (number of recursive steps). For instance, to only compute paths of length up to 2:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE inpre AS (
+SELECT *, 1 path_length FROM prereq
+UNION
+SELECT inpre.course_id, two.prereq_id, path_length + 1 AS path_length
+FROM inpre, prereq two
+WHERE inpre.prereq_id = two.course_id AND path_length &lt; 2
+)
+SELECT * FROM inpre;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>15 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+        <th>path_length</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-315</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-319</td>
+        <td>2</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong> DO NOT EXECUTE THE FOLLOWING QUERY, IT WILL RECURSE ENDLESSLY </strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE will_fail AS (
+   SELECT 1 AS x
+   UNION
+   SELECT x + 1 AS x FROM will_fail
+)
+SELECT * FROM will_fail;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Data-Manipulation-Language-(DML)-Operations">Data Manipulation Language (DML) Operations<a class="anchor-link" href="#Data-Manipulation-Language-(DML)-Operations">&#182;</a></h1><p>Now let's learn about how to update tables by inserting, deleting, and updating rows.</p>
 
 </div>
