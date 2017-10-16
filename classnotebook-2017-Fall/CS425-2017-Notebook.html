@@ -11861,6 +11861,126 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Casting examples. Postgres applies some limited form of type inferences. Whenever you use a function where postgres does not have an implementation of this function for the given input data types, Postgres tries to cast one or both of the input such that an existing implementation can be applied. For instance, Postgres does not have a function to multiply a <code>float</code> with and <code>int</code>. However, the following query still works, because postgres will cast the int (<code>1</code>) into a float and can then apply the function <code>*(float,float)</code>. See <a href="https://www.postgresql.org/docs/9.6/static/typeconv.html">https://www.postgresql.org/docs/9.6/static/typeconv.html</a> for details.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT (1.3 * 1)::int
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[32]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>int4</th>
+    </tr>
+    <tr>
+        <td>1</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>same here, Postgres does not have a function to compare a <code>text</code> with an <code>int</code>. This works, because the <code>int</code> will be cast into a string, i.e., the resulting expression is <code>'1' = 1::text</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT &#39;1&#39; = 1;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[34]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>?column?</th>
+    </tr>
+    <tr>
+        <td>True</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Data-Definition-Language-(DDL)">Data Definition Language (DDL)<a class="anchor-link" href="#Data-Definition-Language-(DDL)">&#182;</a></h1><p>The data definition language part of SQL allows you to change the schema of a database, e.g., creating new relations (tables) or changing the schema of a relation.</p>
 
 </div>
@@ -14547,6 +14667,236 @@ WHERE i.id NOT IN (SELECT * FROM bioids)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Like-construct">Like construct<a class="anchor-link" href="#Like-construct">&#182;</a></h2><p>Here are some more examples using <code>LIKE</code>. Like matches a string value against a pattern which can contain two special characters: <code>%</code> matches any sequence of characters (including the empty string) and <code>_</code> matches exactly one character (any characters works).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>get students whose name starts with <code>A</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * 
+FROM student
+WHERE name LIKE &#39;A%&#39;;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>60</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Get students whose name contains the string <code>ow</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT *
+FROM student
+WHERE name LIKE &#39;%ow%&#39;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>70557</td>
+        <td>Snow</td>
+        <td>Physics</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>58</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Get students whose name is six characters long</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student
+WHERE name LIKE &#39;______&#39;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>3 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>19991</td>
+        <td>Brandt</td>
+        <td>History</td>
+        <td>80</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+        <td>Chavez</td>
+        <td>Finance</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+        <td>Tanaka</td>
+        <td>Biology</td>
+        <td>120</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Recursive-Queries">Recursive Queries<a class="anchor-link" href="#Recursive-Queries">&#182;</a></h2>
 </div>
 </div>
@@ -16782,6 +17132,1002 @@ WHERE (tot_cred, dept_name) IN (SELECT max(m.tot_cred), dept_name FROM student m
         <td>3</td>
     </tr>
 </table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM course
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>title</th>
+        <th>dept_name</th>
+        <th>credits</th>
+    </tr>
+    <tr>
+        <td>BIO-101</td>
+        <td>Intro. to Biology</td>
+        <td>Biology</td>
+        <td>4</td>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>Genetics</td>
+        <td>Biology</td>
+        <td>4</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>Computational Biology</td>
+        <td>Biology</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-101</td>
+        <td>Intro. to Computer Science</td>
+        <td>Comp. Sci.</td>
+        <td>4</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>Game Design</td>
+        <td>Comp. Sci.</td>
+        <td>4</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>Robotics</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>Image Processing</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>Database System Concepts</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>Intro. to Digital Systems</td>
+        <td>Elec. Eng.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>FIN-201</td>
+        <td>Investment Banking</td>
+        <td>Finance</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>HIS-351</td>
+        <td>World History</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>MU-199</td>
+        <td>Music Video Production</td>
+        <td>Music</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>PHY-101</td>
+        <td>Physical Principles</td>
+        <td>Physics</td>
+        <td>4</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set the credits of a course to <code>6</code> where the current credit value is <code>4</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+UPDATE course 
+SET credits = 6
+WHERE credits = 4
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>5 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>now let's check the new content of the course table</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM course;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>title</th>
+        <th>dept_name</th>
+        <th>credits</th>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>Computational Biology</td>
+        <td>Biology</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>Robotics</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>Image Processing</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>Database System Concepts</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>Intro. to Digital Systems</td>
+        <td>Elec. Eng.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>FIN-201</td>
+        <td>Investment Banking</td>
+        <td>Finance</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>HIS-351</td>
+        <td>World History</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>MU-199</td>
+        <td>Music Video Production</td>
+        <td>Music</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>BIO-101</td>
+        <td>Intro. to Biology</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>Genetics</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>CS-101</td>
+        <td>Intro. to Computer Science</td>
+        <td>Comp. Sci.</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>Game Design</td>
+        <td>Comp. Sci.</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>PHY-101</td>
+        <td>Physical Principles</td>
+        <td>Physics</td>
+        <td>6</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Reduce the credits by <code>3</code> where the credits are currently larger equals to <code>6</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+UPDATE course 
+SET credits = credits - 3
+WHERE credits &gt;= 6
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>5 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM course;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>title</th>
+        <th>dept_name</th>
+        <th>credits</th>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>Computational Biology</td>
+        <td>Biology</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>Robotics</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>Image Processing</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>Database System Concepts</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>Intro. to Digital Systems</td>
+        <td>Elec. Eng.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>FIN-201</td>
+        <td>Investment Banking</td>
+        <td>Finance</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>HIS-351</td>
+        <td>World History</td>
+        <td>History</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>MU-199</td>
+        <td>Music Video Production</td>
+        <td>Music</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>BIO-101</td>
+        <td>Intro. to Biology</td>
+        <td>Biology</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>Genetics</td>
+        <td>Biology</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-101</td>
+        <td>Intro. to Computer Science</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>Game Design</td>
+        <td>Comp. Sci.</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>PHY-101</td>
+        <td>Physical Principles</td>
+        <td>Physics</td>
+        <td>3</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set department to <code>Biology</code> and add <code>3</code> to the credits where the current credits are <code>3</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+UPDATE course 
+SET credits = credits + 3, dept_name = &#39;Biology&#39;
+WHERE credits = 3
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[19]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM course;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>title</th>
+        <th>dept_name</th>
+        <th>credits</th>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>Computational Biology</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>Robotics</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>Image Processing</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>Database System Concepts</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>Intro. to Digital Systems</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>FIN-201</td>
+        <td>Investment Banking</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>HIS-351</td>
+        <td>World History</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>MU-199</td>
+        <td>Music Video Production</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>BIO-101</td>
+        <td>Intro. to Biology</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>Genetics</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>CS-101</td>
+        <td>Intro. to Computer Science</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>Game Design</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>PHY-101</td>
+        <td>Physical Principles</td>
+        <td>Biology</td>
+        <td>6</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>or written using tuple constructors:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+UPDATE course 
+SET (credits, dept_name) = (credits + 3, &#39;Biology&#39;)
+WHERE credits = 3
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT * FROM student
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[23]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>dept_name</th>
+        <th>tot_cred</th>
+    </tr>
+    <tr>
+        <td>00128</td>
+        <td>Zhang</td>
+        <td>Comp. Sci.</td>
+        <td>102</td>
+    </tr>
+    <tr>
+        <td>12345</td>
+        <td>Shankar</td>
+        <td>Comp. Sci.</td>
+        <td>32</td>
+    </tr>
+    <tr>
+        <td>19991</td>
+        <td>Brandt</td>
+        <td>History</td>
+        <td>80</td>
+    </tr>
+    <tr>
+        <td>23121</td>
+        <td>Chavez</td>
+        <td>Finance</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>44553</td>
+        <td>Peltier</td>
+        <td>Physics</td>
+        <td>56</td>
+    </tr>
+    <tr>
+        <td>45678</td>
+        <td>Levy</td>
+        <td>Physics</td>
+        <td>46</td>
+    </tr>
+    <tr>
+        <td>54321</td>
+        <td>Williams</td>
+        <td>Comp. Sci.</td>
+        <td>54</td>
+    </tr>
+    <tr>
+        <td>55739</td>
+        <td>Sanchez</td>
+        <td>Music</td>
+        <td>38</td>
+    </tr>
+    <tr>
+        <td>70557</td>
+        <td>Snow</td>
+        <td>Physics</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>76543</td>
+        <td>Brown</td>
+        <td>Comp. Sci.</td>
+        <td>58</td>
+    </tr>
+    <tr>
+        <td>76653</td>
+        <td>Aoi</td>
+        <td>Elec. Eng.</td>
+        <td>60</td>
+    </tr>
+    <tr>
+        <td>98765</td>
+        <td>Bourikas</td>
+        <td>Elec. Eng.</td>
+        <td>98</td>
+    </tr>
+    <tr>
+        <td>98988</td>
+        <td>Tanaka</td>
+        <td>Biology</td>
+        <td>120</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Example of conditional updates. Give CS students <code>10%</code> more credits and everybody else <code>5%</code> more</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+UPDATE student
+SET tot_cred = 1.10 * tot_cred
+WHERE dept_name = &#39;Comp. Sci.&#39;
+
+UPDATE student
+SET tot_cred = 1.05 * tot_cred
+WHERE dept_name &lt;&gt; &#39;Comp. Sci.&#39;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>4 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This can be expressed using case to conditionally determine the new value. Here with one more case: <code>Biology</code> students get <code>15%</code> more credits.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+UPDATE student
+SET tot_cred = CASE 
+                    WHEN dept_name = &#39;Comp. Sci.&#39; THEN 1.10 * tot_cred 
+                    WHEN dept_name = &#39;Biology&#39; THEN 1.15 * tot_cred
+                    ELSE 1.05 * tot_cred END
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>13 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[28]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[]</pre>
 </div>
 
 </div>
