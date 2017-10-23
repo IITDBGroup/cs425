@@ -14998,7 +14998,7 @@ SELECT * FROM prereq;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
@@ -15030,7 +15030,7 @@ INSERT INTO prereq VALUES (&#39;EE-181&#39;, &#39;CS-347&#39;);
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[5]:</div>
+<div class="prompt output_prompt">Out[2]:</div>
 
 
 
@@ -15056,7 +15056,7 @@ INSERT INTO prereq VALUES (&#39;EE-181&#39;, &#39;CS-347&#39;);
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
@@ -15084,7 +15084,7 @@ SELECT * FROM prereq;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[20]:</div>
+<div class="prompt output_prompt">Out[3]:</div>
 
 
 
@@ -15154,7 +15154,7 @@ SELECT * FROM prereq;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
@@ -15193,7 +15193,7 @@ SELECT * FROM p3
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[7]:</div>
+<div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -15279,14 +15279,14 @@ SELECT * FROM p3
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
 WITH RECURSIVE inpre AS (
-SELECT * FROM prereq
+SELECT * FROM prereq -- init query
 UNION
-SELECT inpre.course_id, two.prereq_id
+SELECT inpre.course_id, two.prereq_id -- recursive_step
 FROM inpre, prereq two
 WHERE inpre.prereq_id = two.course_id
 )
@@ -15314,7 +15314,7 @@ SELECT * FROM inpre;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -15400,7 +15400,7 @@ SELECT * FROM inpre;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
@@ -15435,7 +15435,7 @@ SELECT * FROM inpre;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[15]:</div>
+<div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -15695,6 +15695,647 @@ SELECT * FROM inpre;
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Sometimes, we would not just get the information which nodes are connected by paths, but also actually see these paths. The problem that we are facing is that paths may be of arbitrary length. Thus, we cannot represent each position in a path as a separate attribute, because then the query would not have a fixed schema. One way to circumvent this problem is to create a string to represent the whole path and store this string in one attribute. Then we can use string concatenation to extend a path:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE inpre AS (
+SELECT *, 1 path_length, course_id || &#39; -&gt; &#39; || prereq_id AS p FROM prereq
+UNION
+SELECT inpre.course_id, two.prereq_id, path_length + 1 AS path_length, p || &#39;-&gt;&#39; || two.prereq_id AS p
+FROM inpre, prereq two
+WHERE inpre.prereq_id = two.course_id
+)
+SELECT * FROM inpre;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>19 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+        <th>path_length</th>
+        <th>p</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+        <td>1</td>
+        <td>BIO-301 -&gt; BIO-101</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+        <td>1</td>
+        <td>BIO-399 -&gt; BIO-101</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>CS-190 -&gt; CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>CS-315 -&gt; CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>CS-319 -&gt; CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>CS-347 -&gt; CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+        <td>1</td>
+        <td>EE-181 -&gt; PHY-101</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+        <td>1</td>
+        <td>CS-319 -&gt; CS-315</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+        <td>1</td>
+        <td>CS-347 -&gt; CS-319</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+        <td>1</td>
+        <td>EE-181 -&gt; CS-347</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>2</td>
+        <td>CS-319 -&gt; CS-315-&gt;CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>2</td>
+        <td>CS-347 -&gt; CS-319-&gt;CS-101</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-315</td>
+        <td>2</td>
+        <td>CS-347 -&gt; CS-319-&gt;CS-315</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>2</td>
+        <td>EE-181 -&gt; CS-347-&gt;CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-319</td>
+        <td>2</td>
+        <td>EE-181 -&gt; CS-347-&gt;CS-319</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>3</td>
+        <td>CS-347 -&gt; CS-319-&gt;CS-315-&gt;CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>3</td>
+        <td>EE-181 -&gt; CS-347-&gt;CS-319-&gt;CS-101</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-315</td>
+        <td>3</td>
+        <td>EE-181 -&gt; CS-347-&gt;CS-319-&gt;CS-315</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>4</td>
+        <td>EE-181 -&gt; CS-347-&gt;CS-319-&gt;CS-315-&gt;CS-101</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Alternatively, we can use the array datatype (<a href="https://www.postgresql.org/docs/9.6/static/arrays.html">https://www.postgresql.org/docs/9.6/static/arrays.html</a>) in Postgres to create a more useful result.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE inpre AS (
+SELECT *, 1 path_length, ARRAY[course_id,prereq_id]::text[] AS p FROM prereq
+UNION
+SELECT inpre.course_id, two.prereq_id, path_length + 1 AS path_length, p || ARRAY[two.prereq_id]::text[] AS p
+FROM inpre, prereq two
+WHERE inpre.prereq_id = two.course_id
+)
+SELECT * FROM inpre;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>19 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[18]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+        <th>path_length</th>
+        <th>p</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+        <td>1</td>
+        <td>[&#x27;BIO-301&#x27;, &#x27;BIO-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+        <td>1</td>
+        <td>[&#x27;BIO-399&#x27;, &#x27;BIO-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>[&#x27;CS-190&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>[&#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>[&#x27;CS-319&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>1</td>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+        <td>1</td>
+        <td>[&#x27;EE-181&#x27;, &#x27;PHY-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+        <td>1</td>
+        <td>[&#x27;CS-319&#x27;, &#x27;CS-315&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+        <td>1</td>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;]</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+        <td>1</td>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>2</td>
+        <td>[&#x27;CS-319&#x27;, &#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>2</td>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-315</td>
+        <td>2</td>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;]</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>2</td>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-319</td>
+        <td>2</td>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;]</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>3</td>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>3</td>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-315</td>
+        <td>3</td>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;]</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>4</td>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Using arrays is better to access elements from the path, e.g., to get the third element of very path:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE inpre AS (
+SELECT *, 1 path_length, ARRAY[course_id,prereq_id]::text[] AS p FROM prereq
+UNION
+SELECT inpre.course_id, two.prereq_id, path_length + 1 AS path_length, p || ARRAY[two.prereq_id]::text[] AS p
+FROM inpre, prereq two
+WHERE inpre.prereq_id = two.course_id
+)
+SELECT p, p[3] FROM inpre;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>19 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[19]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>p</th>
+        <th>p_1</th>
+    </tr>
+    <tr>
+        <td>[&#x27;BIO-301&#x27;, &#x27;BIO-101&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;BIO-399&#x27;, &#x27;BIO-101&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-190&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-319&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;EE-181&#x27;, &#x27;PHY-101&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-319&#x27;, &#x27;CS-315&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;]</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-319&#x27;, &#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;]</td>
+        <td>CS-315</td>
+    </tr>
+    <tr>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>CS-101</td>
+    </tr>
+    <tr>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;]</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>[&#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>CS-315</td>
+    </tr>
+    <tr>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;]</td>
+        <td>CS-319</td>
+    </tr>
+    <tr>
+        <td>[&#x27;EE-181&#x27;, &#x27;CS-347&#x27;, &#x27;CS-319&#x27;, &#x27;CS-315&#x27;, &#x27;CS-101&#x27;]</td>
+        <td>CS-319</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we just want to now how many paths exist that connects a pair of nodes, then we can use aggregation in the final query:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+WITH RECURSIVE inpre AS (
+SELECT *, 1 path_length, course_id || &#39; -&gt; &#39; || prereq_id AS p FROM prereq
+UNION
+SELECT inpre.course_id, two.prereq_id, path_length + 1 AS path_length, p || &#39;-&gt;&#39; || two.prereq_id AS p
+FROM inpre, prereq two
+WHERE inpre.prereq_id = two.course_id
+)
+SELECT course_id, prereq_id, count(*) AS numPath 
+FROM inpre
+GROUP BY course_id, prereq_id
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>14 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>course_id</th>
+        <th>prereq_id</th>
+        <th>numpath</th>
+    </tr>
+    <tr>
+        <td>BIO-301</td>
+        <td>BIO-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>BIO-399</td>
+        <td>BIO-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-190</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-315</td>
+        <td>CS-101</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-101</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>CS-319</td>
+        <td>CS-315</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-101</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-315</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>CS-347</td>
+        <td>CS-319</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-101</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-315</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-319</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>CS-347</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>EE-181</td>
+        <td>PHY-101</td>
+        <td>1</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><strong> DO NOT EXECUTE THE FOLLOWING QUERY, IT WILL RECURSE ENDLESSLY </strong></p>
 
 </div>
@@ -15715,6 +16356,220 @@ SELECT * FROM will_fail;
 </pre></div>
 
 </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Difference-between-WHERE-and-HAVING">Difference between WHERE and HAVING<a class="anchor-link" href="#Difference-between-WHERE-and-HAVING">&#182;</a></h2><p>The <code>WHERE</code> clause is applied after the <code>FROM</code> clause and before <code>SELECT</code>, <code>GROUP BY</code>. The <code>HAVING</code> clause is applied after the <code>GROUP BY</code> and computing aggregation functions (but before the <code>SELECT</code>).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For instance, we want to compute the average <code>tot_cred</code> for studends per department, but only want to consider students with more than <code>10</code> credits in the calculation and only want to return this information for departments with more than <code>3</code> such students (<code>count(*) &gt; 3</code>).</p>
+<ul>
+<li>the condition on <code>tot_cred</code> has to be evaluated before the aggregation, so it has to be part of the <code>WHERE</code> clause</li>
+<li>the condition <code>count(*) &gt; 3</code> is refering to aggregation function results and, thus, has to be placed in the <code>HAVING</code> clause </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT avg(tot_cred), dept_name
+FROM student
+WHERE tot_cred &gt; 10 -- NOT ALLOWED count(*) &gt; 10
+GROUP BY dept_name
+
+HAVING count(*) &gt; 3 -- NOT ALLOWED tot_cred &gt; 10
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>avg</th>
+        <th>dept_name</th>
+    </tr>
+    <tr>
+        <td>81.7500000000000000</td>
+        <td>Comp. Sci.</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To further illustrate that: The <code>HAVING</code> clause is equivalent to using a <code>WHERE</code> clause in an outer query and compute the aggregation in a subquery.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT *
+FROM (
+SELECT avg(tot_cred) AS ac, count(*) AS c, dept_name
+FROM student
+WHERE tot_cred &gt; 10
+GROUP BY dept_name
+) sub
+WHERE c &gt; 3
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>ac</th>
+        <th>c</th>
+        <th>dept_name</th>
+    </tr>
+    <tr>
+        <td>81.7500000000000000</td>
+        <td>4</td>
+        <td>Comp. Sci.</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that a having clause may be present even though there are no aggregation functions in the <code>SELECT</code> clause. For example:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+SELECT DISTINCT &#39;there exists and apartment with more than 3 students&#39;
+FROM student
+GROUP BY dept_name
+HAVING count(*) &gt; 3
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 rows affected.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+    <tr>
+        <th>?column?</th>
+    </tr>
+    <tr>
+        <td>there exists and apartment with more than 3 students</td>
+    </tr>
+</table>
+</div>
+
+</div>
+
 </div>
 </div>
 
