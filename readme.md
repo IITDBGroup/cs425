@@ -133,3 +133,19 @@ Docker is a virtualization system that enables images (think of them as virtual 
 * **Docker Hub** ([https://hub.docker.com/](https://hub.docker.com/))is a public repository of images. Per default `docker pull` will pull images from this repository.
 
 * **Docker Tutorial**: [https://docs.docker.com/get-started/](https://docs.docker.com/get-started/)
+
+# Git Links
+
+Git is a distributed version control system. You locally have a copy of a repository that you can sync with one or more remotes. Remotes are typically hosted git repositories on sites like [www.github.com](www.github.com), [www.bitbucket.org](www.bitbucket.org), and [www.gitlab.com](www.gitlab.com). Version control systems allow you to keep track of multiple versions of your data. The most common use case for such systems is managing source code. Good introductions to git are:
+
+* **Official Git Documentation**: [http://git-scm.com/documentation](http://git-scm.com/documentation)
+* **Gitmagic**: [http://www-cs-students.stanford.edu/~blynn/gitmagic/book.pdf](http://www-cs-students.stanford.edu/~blynn/gitmagic/book.pdf)
+
+In a nutshell a typical workflow with git consists of:
+
+1) **Clone repos**: Cloning a remote repository created a local copy of this repository on your machine. You typically only do this once.
+2) **Do Work**: Modify the files in the repository, create new files, test, ...
+3) **Create a Commit**: A commit is esstentially a snapshot of the content of your repository. In git, commits are not automatially synced with remotes. That is, unless you sync them by (step 4), the commit only exists locally on your machine.
+4) **Sync with Remote**: Once you want to make your commits accessible to other users of the remote repository, you would sync you local copy with the remote one. Normally, this consists of two steps: 1) fetch commits from the remote that you do not have locally and merge them with your commits (by running `git pull origin master`) and 2) send your local commits to the remote to make them available to other users (by running `git push origin master`). Jump to step 2
+
+* **Extensive list of GUIs for git**: [https://git-scm.com/downloads/guis](https://git-scm.com/downloads/guis)
