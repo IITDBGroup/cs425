@@ -10,16 +10,20 @@ public class MyJDBCExample {
 
 	public static final String JDBC_DRIVER = "org.postgresql.Driver";
 	// postgres URLs are of the form: jdbc:postgresql://host:port/database
-	public static final String JDBC_URL = "jdbc:postgresql://127.0.0.1:5432/cs425";
+	public static final String JDBC_DB = "university";
+	public static final String JDBC_PORT = "5432";
+	public static final String JDBC_HOST = "127.0.0.1";
+	public static final String JDBC_URL = "jdbc:postgresql://" + JDBC_HOST + ":" + JDBC_PORT + "/" + JDBC_DB;
 	public static final String DBUSER = "postgres";
 	public static final String DBPASSWD = "test";
 	
 	public static void main (String[] args) throws Exception {
 		try {
-			// load the driver
+			// load the driver based on the drivers class name
 			Class.forName(JDBC_DRIVER);
 			// create a connection
 			Connection c = DriverManager.getConnection(JDBC_URL, DBUSER, DBPASSWD);
+			
 			// create a statement object to execute commands
 			Statement s = c.createStatement();
 
@@ -61,7 +65,12 @@ public class MyJDBCExample {
 		}
 		catch (Exception e) {
 			System.err.println("An error occurred: " + e.toString());
-			System.err.println("\n\nFOR THIS PROGRAM TO WORK YOU HAVE TO HAVE A POSTGRES SERVER RUNNING LOCALLY (OR DOCKER) AT 127.0.0.1 WITH PORT 5432 AND DATABASE cs425 AND USER postgres WITH PASSWORD test");
+			System.err.println("\n\nFOR THIS PROGRAM TO WORK YOU HAVE TO HAVE A POSTGRES SERVER RUNNING LOCALLY (OR DOCKER) AT "
+							   + JDBC_HOST
+							   + " WITH PORT " + JDBC_PORT
+							   + " AND DATABASE " + JDBC_DB
+							   + " AND USER " + DBUSER
+							   + " WITH PASSWORD " + DBPASSWD);
 		}
 	}
 	
