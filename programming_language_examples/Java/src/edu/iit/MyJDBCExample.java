@@ -1,6 +1,7 @@
 package edu.iit;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +12,7 @@ public class MyJDBCExample {
 	public static final String JDBC_DRIVER = "org.postgresql.Driver";
 	// postgres URLs are of the form: jdbc:postgresql://host:port/database
 	public static final String JDBC_DB = "university";
-	public static final String JDBC_PORT = "5432";
+	public static final String JDBC_PORT = "5450";
 	public static final String JDBC_HOST = "127.0.0.1";
 	public static final String JDBC_URL = "jdbc:postgresql://" + JDBC_HOST + ":" + JDBC_PORT + "/" + JDBC_DB;
 	public static final String DBUSER = "postgres";
@@ -47,7 +48,7 @@ public class MyJDBCExample {
 			}
 			// after you are done with a result set call the close() method
 			r.close();
-
+			
 			// now lets use this interface for a query that returns multiple columns with different data types
 			r = s.executeQuery("SELECT id, tot_cred, name FROM student ORDER BY name ASC;");
 			while(r.next()) {
@@ -60,8 +61,108 @@ public class MyJDBCExample {
 		
 			// close statment
 			s.close();
-			// close connection
-			c.close();
+
+			
+			// transactions
+			// turn of autocommit
+			c.setAutoCommit(false);
+			
+			s = c.createStatement();
+
+			// run updates an abort transaction
+			s.executeUpdate("DELETE FROM student;");
+			s.executeUpdate("DELETE FROM instructor;");
+
+			c.rollback();
+
+			// student table should still be the same
+			r = s.executeQuery("SELECT count(*) FROM student;");
+			while(r.next())
+			{
+				System.out.println("The count is: " + r.getString(1));
+			}
+			r.close();
+			
+			// student table should still be the same
+			r = s.executeQuery("SELECT sum(tot_cred) FROM student;");
+			while(r.next())
+			{
+				System.out.println("The total of tot_cred is: " + r.getString(1));
+			}
+			r.close();
+			
+			// commit a transaction
+			s.executeUpdate("UPDATE student SET tot_cred = tot_cred + 1;");
+			c.commit();
+
+			// student table should still be the same
+			r = s.executeQuery("SELECT sum(tot_cred) FROM student;");
+			while(r.next())
+			{
+				System.out.println("The total of tot_cred is: " + r.getString(1));
+			}			
+			r.close();
+			
+			// prepared statements act as template SQL with placeholders
+			// advantage: SQL injection + reduced cost for statements that are executed frequently
+			r = s.executeQuery("SELECT count(*) FROM instructor;");
+			while(r.next())
+			{
+				System.out.println("The total of number of instructors is: " + r.getString(1));
+			}			
+			r.close();
+
+			s.executeUpdate("DELETE FROM instructor WHERE id = '99999';");
+			c.commit();
+			
+			PreparedStatement pStmt = c.prepareStatement("INSERT INTO instructor VALUES(?,?,?,?)");
+			
+			pStmt.setString(1, "99999");
+			pStmt.setString(2, "XXXPersonXXX");
+			pStmt.setString(3, "Finance");
+			pStmt.setInt(4, 125000);
+
+			pStmt.executeUpdate();
+			c.commit();
+
+			r = s.executeQuery("SELECT count(*) FROM instructor;");
+			while(r.next())
+			{
+				System.out.println("The total of number of instructors is: " + r.getString(1));
+			}			
+			r.close();
+
+			// SQL injection
+			String name = "X'::TEXT OR true OR name = '";
+
+			// retrieves all instructors
+			System.out.println("SELECT * FROM instructor WHERE name::TEXT = '" + name + "'::TEXT");
+			r = s.executeQuery("SELECT * FROM instructor WHERE name::TEXT = '" + name + "'::TEXT");
+			// SELECT * FROM instructor u name = 'X' OR true OR name = '';
+			while(r.next())
+			{
+				System.out.println("The total of number of instructors is: " + r.getString(1) + "," + r.getString("name"));
+			}
+			r.close();
+
+			// manipulate the database
+			name = "X'; DELETE FROM instructor; SELECT 'a";
+			r = s.executeQuery("SELECT * FROM instructor WHERE name = '" + name + "'");
+			// SELECT * FROM instructor WHERE name = 'X'; DELETE FROM instructor;
+			r.close();
+
+			r = s.executeQuery("SELECT count(*) FROM instructor;");
+			while(r.next())
+			{
+				System.out.println("The total of number of instructors is: " + r.getString(1));
+			}			
+			r.close();			
+			
+			c.rollback();
+			
+            // close connection
+			s.close();
+			c.close();			
 		}
 		catch (Exception e) {
 			System.err.println("An error occurred: " + e.toString());
