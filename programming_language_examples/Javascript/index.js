@@ -9,7 +9,7 @@ const connectDb = async () => {
             host: "127.0.0.1",
             database: "university",
             password: "test",
-            port: 5450
+            port: 5432
         })
 
 		// connect and wait for the connection to be established
@@ -20,7 +20,7 @@ const connectDb = async () => {
         console.log(res)
 
 		// access the rows as an array of JS objects
-		console.log(res.rows)		
+		console.log(res.rows)
 
 		// loop over rows
 		for (r of res.rows) {
@@ -29,7 +29,7 @@ const connectDb = async () => {
 
 		// run DML
 		await client.query("DELETE FROM student WHERE name = 'does not exist'")
-		
+
 		// disconnecting
         await client.end()
     } catch (error) {
