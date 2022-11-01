@@ -1,0 +1,14 @@
+{
+  "name": "cs425-pg",
+  "version": "1.0.0",
+  "description": "Postgres examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Boris Glavic",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.8.0"
+  }
+}

@@ -5,7 +5,7 @@ def exec_and_print_result(c,sql):
     Execute a query sql using cursor c and print its results
     """
     try:
-        print(f"================================================================================\nQUERY: {sql}\n")
+        print(80 * "=" + f"\nQUERY: {sql}\n")
         c.execute(sql)
         rows = c.fetchall()
         for r in rows:
