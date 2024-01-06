@@ -2,12 +2,13 @@
 # Distributed under the terms of the Modified BSD License.
 FROM jupyter/minimal-notebook
 
-MAINTAINER Boris Glavic <bglavic@iit.edu>
+LABEL org.opencontainers.image.authors="bglavic@uic.edu"
 
 USER $NB_USER
 
 # Install SQL magic and postgres library
-RUN conda install --quiet --yes \
-    'ipython-sql' \
+RUN mamba install --quiet --yes \
+    'jupysql' \
+    'ipywidgets' \
     'psycopg2' \
-	 && conda clean -tipsy
+	 && conda clean -ti

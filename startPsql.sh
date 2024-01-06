@@ -1,1 +1,1 @@
-sudo docker exec -ti mypostgres psql -U postgres cs425 
+sudo docker exec -ti my-cs480-postgres psql -U postgres cs480

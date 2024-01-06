@@ -18,15 +18,15 @@ connection = {
     'user': 'postgres',
     'host': '127.0.0.1',
     'password': 'test',
-    'port': 5432
+    'port': 5450
     }
 
 # Create a connection
 try:
     # conn = psycopg2.connect(dbname="university", user="postgres") 
     conn = psycopg2.connect(**connection)
-except:
-    print(f"I am unable to connect to the database with connection parameters:\n{connection}")
+except Exception as e:
+    print(f"I am unable to connect to the database with connection parameters:\n{connection}\n{e}")
     exit(1)
 
 # Create a curson
@@ -48,8 +48,8 @@ for row in rows:
 # now a query with more result columns
 try:
     cur.execute("SELECT id, name, tot_cred FROM student ORDER BY name ASC")
-except:
-    print("I can't SELECT from student")
+except Exception as e:
+    print(f"I can't SELECT from student:\n{e}")
 
 rows = cur.fetchall()
 print("\nResults: \n")
