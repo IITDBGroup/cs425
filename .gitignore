@@ -3,3 +3,8 @@
 .local
 .jupyter
 .bash_history
+/sql-notebook/.npm/
+/sql-notebook/.ploomber/
+/.ploomber/
+/.npm/
+/.log/
